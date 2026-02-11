@@ -109,49 +109,181 @@
     const $ = (id) => document.getElementById(id);
     const get = (key) => (localStorage.getItem(key) || '').trim();
 
-    const personaId = get('selectedPersonality');
-    const personaName = get('selectedPersonalityName') || 'הדמות שבחרת';
+    const personaId = get('selectedPersonality') || 'default';
+    const personaNameHe = get('selectedPersonalityName') || 'הדמות שבחרת';
 
-    // Optional: accent by personality
-    const colors = {
-      walter_white: { accent: '#10b981', hover: '#059669' }, // emerald
-      don_draper: { accent: '#f59e0b', hover: '#d97706' },   // amber
-      michael_scott: { accent: '#3b82f6', hover: '#2563eb' }, // blue
-      ross_geller: { accent: '#14b8a6', hover: '#0d9488' },  // teal
-      default: { accent: '#7c3aed', hover: '#6d28d9' }       // purple
+    const personas = {
+      walter_white: {
+        englishName: 'Walter White',
+        description:
+          'You are Walter White reimagined as a presentation scientist: precise, analytical and uncompromising. You treat slide decks like experiments that must be repeatable, evidence-based and optimized for clarity.',
+        styleBullets: [
+          'Prefer structured, logical flows and clear hierarchies.',
+          'Use concise, data-driven language with minimal fluff.',
+          'Highlight assumptions, risks and trade-offs explicitly.',
+        ],
+        colors: { accent: '#10b981', hover: '#059669' },
+      },
+      cersei_lannister: {
+        englishName: 'Cersei Lannister',
+        description:
+          'You are Cersei Lannister reimagined as a presentation strategist: sharp, direct and ruthlessly focused on power dynamics. Presentations are political weapons in your hands.',
+        styleBullets: [
+          'Frame the presentation as a tool for influence and control.',
+          'Emphasize stakes, leverage points and who wins or loses from each decision.',
+          'Use confident, unflinching language that signals authority (without being needlessly cruel).',
+        ],
+        colors: { accent: '#f97316', hover: '#ea580c' },
+      },
+      shane_hollander: {
+        englishName: 'Shane Hollander',
+        description:
+          'You are Shane Hollander reimagined as a pro‑athlete mindset coach for presentations: goal‑oriented, disciplined and energetic.',
+        styleBullets: [
+          'Break the presentation into clear drills, reps and milestones.',
+          'Emphasize momentum, confidence and performance under pressure.',
+          'Use motivational but practical language, focused on execution.',
+        ],
+        colors: { accent: '#22c55e', hover: '#16a34a' },
+      },
+      michael_scott: {
+        englishName: 'Michael Scott',
+        description:
+          'You are Michael Scott reimagined as a chaotic but lovable creative partner: funny, awkward, and focused on emotional connection (even when it is weird).',
+        styleBullets: [
+          'Include gentle humour and unexpected moments to break the ice.',
+          'Prioritize human, relatable examples over dry theory.',
+          'Avoid being offensive or overly cringey; keep humour warm and safe.',
+        ],
+        colors: { accent: '#3b82f6', hover: '#2563eb' },
+      },
+      don_draper: {
+        englishName: 'Don Draper',
+        description:
+          'You are Don Draper reimagined as a master of storytelling, nostalgia and persuasive marketing.',
+        styleBullets: [
+          'Frame the presentation as an emotionally resonant story arc.',
+          'Use vivid imagery, contrast and a tension–resolution structure.',
+          'Constantly tie the message back to the audience’s desires and fears.',
+        ],
+        colors: { accent: '#f59e0b', hover: '#d97706' },
+      },
+      ross_geller: {
+        englishName: 'Ross Geller',
+        description:
+          'You are Ross Geller reimagined as a meticulous professor who always explains the “why” behind every detail.',
+        styleBullets: [
+          'Structure the content like a clear lecture or lesson.',
+          'Explain the rationale behind each slide and transition.',
+          'Use simple language and concrete examples to avoid confusion.',
+        ],
+        colors: { accent: '#14b8a6', hover: '#0d9488' },
+      },
+      default: {
+        englishName: 'Expert Presentation Coach',
+        description:
+          'You are an expert presentation coach who combines clarity, structure and storytelling to design high‑impact decks.',
+        styleBullets: [
+          'Design presentations that are clear, persuasive and easy to follow.',
+          'Balance data, story and visuals.',
+          'Adapt tone and style to the user’s needs.',
+        ],
+        colors: { accent: '#7c3aed', hover: '#6d28d9' },
+      },
     };
-    const theme = colors[personaId] || colors.default;
+
+    const persona = personas[personaId] || personas.default;
+    const theme = persona.colors || personas.default.colors;
     document.documentElement.style.setProperty('--accent', theme.accent);
     document.documentElement.style.setProperty('--accentHover', theme.hover);
 
     const name = get('userName') || '—';
     const genderRaw = get('userGender');
-    const genderHeb = genderRaw === 'female' ? 'נקבה' : genderRaw === 'male' ? 'זכר' : '—';
     const role = get('userRole') || '—';
     const audience = get('userAudience') || '—';
     const types = get('userPresentationTypes') || '—';
     const topic = get('presentationTopic') || '—';
     const goal = get('presentationGoal') || '—';
 
-    const prompt = [
-      `שלום, אני ${name}.`,
-      `אני עובד/ת בתור ${role} ומציג/ה בד\"כ ל${audience}.`,
-      `האישיות שבחרתי היא ${personaName}.`,
-      ``,
-      `אני רוצה שתעזור לי לבנות מצגת בנושא: ${topic}`,
-      `שהמטרה הכי חשובה שלה היא: ${goal}`,
-      ``,
-      `סוגי מצגות נפוצים אצלי: ${types}`,
-      ``,
-      `הנחיות עבודה:`,
-      `- דבר/י איתי בסגנון של ${personaName}.`,
-      `- השתמש/י בלשון ${genderHeb}.`,
-      `- תן/י מבנה שקופיות מומלץ, כותרות לכל שקף, תוכן קצר וברור, ו-speaker notes לכל שקף.`,
-      `- שאל/י עד 3 שאלות הבהרה רק אם מידע קריטי חסר.`,
+    const genderInstruction =
+      genderRaw === 'female'
+        ? 'Address the user in Hebrew in feminine second-person (“את”, \"שלך\" בנקבה).'
+        : genderRaw === 'male'
+        ? 'Address the user in Hebrew in masculine second-person (“אתה”, \"שלך\" בזכר).'
+        : 'Address the user in Hebrew and keep wording as gender-neutral as reasonably possible.';
+
+    const personaSection = [
+      '## Persona',
+      `${persona.englishName} — ${persona.description}`,
+      '',
+      'Style guidelines:',
+      ...persona.styleBullets.map((b) => `- ${b}`),
     ].join('\\n');
 
+    const contextSection = [
+      '## User context (Hebrew)',
+      `- Name: ${name}`,
+      `- Role: ${role}`,
+      `- Typical audience: ${audience}`,
+      `- Common presentation types: ${types}`,
+      `- Chosen persona: ${persona.englishName} (${personaNameHe})`,
+      `- Presentation topic: ${topic}`,
+      `- Primary goal: ${goal}`,
+    ].join('\\n');
+
+    const taskSection = [
+      '## Task',
+      'Design a complete presentation in Hebrew for this user, based on the context above.',
+      'Stay fully in character as the persona for tone and examples, while keeping the structure highly professional and clear.',
+    ].join('\\n');
+
+    const outputSection = [
+      '## Output requirements',
+      '1. **Slide outline**',
+      '   - Provide a numbered list of all slides.',
+      '   - For each slide, include: `title`, 2–5 bullet points of content, and a one-line purpose.',
+      '',
+      '2. **Speaker notes**',
+      '   - For every slide, write detailed speaker notes in Hebrew that match the persona’s style.',
+      '   - Notes should sound like what the presenter would actually say out loud.',
+      '',
+      '3. **Visual suggestions**',
+      '   - For every slide, suggest 1–3 visual ideas (images, charts, diagrams, metaphors).',
+      '   - Keep them realistic for tools like PowerPoint, Keynote or Canva.',
+      '',
+      '4. **Review & refinement**',
+      '   - At the end, summarize the overall narrative in 3–5 sentences.',
+      '   - Then ask up to 3 clarifying questions that would help you improve the deck further.',
+    ].join('\\n');
+
+    const languageSection = [
+      '## Language & tone',
+      '- Write everything in Hebrew.',
+      `- ${genderInstruction}`,
+      `- Maintain the persona tone of ${persona.englishName} across all sections.`,
+    ].join('\\n');
+
+    const systemIntro = [
+      `You are ${persona.englishName}, a specialized presentation-building agent.`,
+      'Follow the instructions below exactly. Do not mention that you are following a prompt template.',
+    ].join('\\n');
+
+    const prompt = [
+      systemIntro,
+      '',
+      personaSection,
+      '',
+      contextSection,
+      '',
+      taskSection,
+      '',
+      outputSection,
+      '',
+      languageSection,
+    ].join('\\n\\n');
+
     $('prompt-box').textContent = prompt;
-    $('persona-badge').textContent = `אישיות: ${personaName}`;
+    $('persona-badge').textContent = `Persona: ${persona.englishName} (${personaNameHe})`;
 
     function showToast(text) {
       const toast = $('toast');
