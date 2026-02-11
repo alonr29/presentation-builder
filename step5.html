@@ -26,6 +26,19 @@
     .btn-accent { background: var(--accent); }
     .btn-accent:hover { background: var(--accentHover); }
     .accent-ring:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
+    /* Prompt fade-in animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp 0.6s ease-out; }
+    /* Toast animation */
+    @keyframes toastFade {
+      0% { opacity: 0; transform: translateY(8px); }
+      10%, 90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-4px); }
+    }
+    .toast-animate { animation: toastFade 2.5s ease-in-out; }
   </style>
 </head>
 <body class="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
@@ -35,6 +48,10 @@
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-700 font-medium text-sm">
         שלב 5 מתוך 5 - הפרומפט שלך מוכן!
       </span>
+      <!-- Visual progress bar -->
+      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
+        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 100%;"></div>
+      </div>
     </div>
 
     <!-- Header -->
@@ -66,7 +83,7 @@
           </p>
         </div>
 
-        <pre class="w-full rounded-2xl bg-slate-900 text-slate-100 p-4 md:p-5 overflow-auto text-sm leading-6 border border-slate-800"><code id="prompt-box">טוען פרומפט...</code></pre>
+        <pre class="w-full rounded-2xl bg-slate-900 text-slate-100 p-4 md:p-5 overflow-auto text-sm leading-6 border border-slate-800 fade-in-up"><code id="prompt-box">טוען פרומפט...</code></pre>
 
         <div class="mt-4 flex flex-col md:flex-row gap-3">
           <button
@@ -99,8 +116,12 @@
 
     <!-- Toast -->
     <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 hidden">
-      <div class="px-4 py-2 rounded-full bg-gray-900 text-white text-sm shadow-lg">
-        הועתק ללוח
+      <div id="toast-inner" class="flex items-center gap-2 px-4 py-2 rounded-full bg-green-600 text-white text-sm shadow-lg">
+        <!-- Check icon -->
+        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M16.707 5.293a1 1 0 0 1 0 1.414l-7.25 7.25a1 1 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L8.5 11.586l6.543-6.543a1 1 0 0 1 1.414 0Z" fill="currentColor" />
+        </svg>
+        <span id="toast-text">הועתק ללוח</span>
       </div>
     </div>
   </main>
@@ -285,12 +306,21 @@
     $('prompt-box').textContent = prompt;
     $('persona-badge').textContent = `Persona: ${persona.englishName} (${personaNameHe})`;
 
-    function showToast(text) {
+    // Toast utility with success/error variants
+    function showToast(text, isSuccess = true) {
       const toast = $('toast');
-      toast.querySelector('div').textContent = text;
+      const inner = $('toast-inner');
+      const textEl = $('toast-text');
+
+      textEl.textContent = text;
+      inner.classList.remove('bg-green-600', 'bg-red-600', 'toast-animate');
+      inner.classList.add(isSuccess ? 'bg-green-600' : 'bg-red-600', 'toast-animate');
+
       toast.classList.remove('hidden');
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.add('hidden'), 1400);
+      showToast._t = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
     }
 
     async function copyToClipboard(text) {
@@ -298,7 +328,7 @@
         await navigator.clipboard.writeText(text);
         return true;
       } catch (_) {
-        // Fallback
+        // Fallback using execCommand for older browsers
         try {
           const ta = document.createElement('textarea');
           ta.value = text;
@@ -318,12 +348,34 @@
 
     $('copy-btn').addEventListener('click', async () => {
       const ok = await copyToClipboard(prompt);
-      showToast(ok ? 'הועתק ללוח' : 'לא הצלחתי להעתיק — נסו ידנית');
+      showToast(ok ? 'הועתק ללוח' : 'לא הצלחתי להעתיק — נסה ידנית', ok);
     });
 
-    $('restart-btn').addEventListener('click', () => {
+    const restart = () => {
       localStorage.clear();
       window.location.href = 'index.html';
+    };
+
+    $('restart-btn').addEventListener('click', restart);
+
+    // Keyboard shortcuts: Cmd/Ctrl+C to copy, Esc to restart
+    window.addEventListener('keydown', async (event) => {
+      const selection = window.getSelection();
+      const hasSelection = selection && selection.toString().length > 0;
+
+      // Cmd/Ctrl + C copies prompt when nothing is selected
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'c' && !hasSelection) {
+        event.preventDefault();
+        const ok = await copyToClipboard(prompt);
+        showToast(ok ? 'הועתק ללוח' : 'לא הצלחתי להעתיק — נסה ידנית', ok);
+        return;
+      }
+
+      // Escape restarts wizard
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        restart();
+      }
     });
   </script>
 </body>

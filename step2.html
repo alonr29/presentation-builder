@@ -30,6 +30,10 @@
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
         שלב 2 מתוך 5
       </span>
+      <!-- Visual progress bar -->
+      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
+        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 40%;"></div>
+      </div>
     </div>
 
     <!-- Title -->
@@ -46,7 +50,8 @@
       <button
         type="button"
         data-personality="walter_white"
-        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Walter White - מדען מצגות מדויק, אנליטי וחסר פשרות"
       >
         <span class="text-4xl mb-3" aria-hidden="true">🧪</span>
         <h3 class="font-bold text-lg mb-1">וולטר ווייט</h3>
@@ -59,7 +64,8 @@
       <button
         type="button"
         data-personality="don_draper"
-        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Don Draper - מאסטר של סטוריטלינג, נוסטלגיה ופיתוי שיווקי"
       >
         <span class="text-4xl mb-3" aria-hidden="true">🥃</span>
         <h3 class="font-bold text-lg mb-1">דון דרייפר</h3>
@@ -72,7 +78,8 @@
       <button
         type="button"
         data-personality="michael_scott"
-        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Michael Scott - שותף יצירתי ומשעשע שמתמקד בחיבור רגשי"
       >
         <span class="text-4xl mb-3" aria-hidden="true">📎</span>
         <h3 class="font-bold text-lg mb-1">מייקל סקוט</h3>
@@ -85,7 +92,8 @@
       <button
         type="button"
         data-personality="ross_geller"
-        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Ross Geller - פרופסור מתודי ויסודי שמסביר את ה'למה' מאחורי כל פרט"
       >
         <span class="text-4xl mb-3" aria-hidden="true">🦖</span>
         <h3 class="font-bold text-lg mb-1">רוס גלר</h3>
@@ -110,12 +118,26 @@
       michael_scott: 'מייקל סקוט',
       ross_geller: 'רוס גלר'
     };
-    document.querySelectorAll('.personality-card').forEach(card => {
+    const cards = document.querySelectorAll('.personality-card');
+
+    cards.forEach(card => {
       card.addEventListener('click', () => {
         const id = card.dataset.personality;
+
+        // Visual selection state
+        cards.forEach(c => {
+          c.classList.remove('ring-4', 'ring-purple-500', 'scale-105');
+        });
+        card.classList.add('ring-4', 'ring-purple-500', 'scale-105');
+
+        // Persist chosen persona
         localStorage.setItem('selectedPersonality', id);
         localStorage.setItem('selectedPersonalityName', personalityNames[id] || '');
-        window.location.href = 'step3.html';
+
+        // Small delay so the animation is visible
+        setTimeout(() => {
+          window.location.href = 'step3.html';
+        }, 300);
       });
     });
   </script>

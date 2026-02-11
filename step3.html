@@ -30,6 +30,10 @@
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
         שלב 3 מתוך 5
       </span>
+      <!-- Visual progress bar -->
+      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
+        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 60%;"></div>
+      </div>
     </div>
 
     <form id="step3-form" class="space-y-8">
@@ -48,6 +52,9 @@
           id="role"
           name="role"
           placeholder="למשל: מנהלת שיווק, סטודנט, יזם"
+          required
+          aria-required="true"
+          aria-label="מה התפקיד שלך"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition"
         >
       </div>
@@ -62,6 +69,9 @@
           id="audience"
           name="audience"
           placeholder="למשל: הנהלה, לקוחות, תלמידים"
+          required
+          aria-required="true"
+          aria-label="למי אתה בדרך כלל מציג"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition"
         >
       </div>
@@ -76,6 +86,9 @@
           id="presentation-types"
           name="presentation_types"
           placeholder="למשל: עדכוני סטטוס, pitch, הרצאות"
+          required
+          aria-required="true"
+          aria-label="סוגי המצגות הנפוצים שלך"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition"
         >
       </div>
@@ -99,17 +112,58 @@
   </main>
 
   <script>
-    // Show selected personality name in title (from localStorage)
-    const nameEl = document.getElementById('personality-name');
-    const savedName = localStorage.getItem('selectedPersonalityName');
-    if (savedName) nameEl.textContent = savedName;
+    // Prefill and behavior for step 3
+    window.addEventListener('DOMContentLoaded', () => {
+      // Show selected personality name in title (from localStorage)
+      const nameEl = document.getElementById('personality-name');
+      const savedName = localStorage.getItem('selectedPersonalityName');
+      if (savedName) nameEl.textContent = savedName;
 
-    document.getElementById('step3-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      localStorage.setItem('userRole', document.getElementById('role').value.trim());
-      localStorage.setItem('userAudience', document.getElementById('audience').value.trim());
-      localStorage.setItem('userPresentationTypes', document.getElementById('presentation-types').value.trim());
-      window.location.href = 'step4.html';
+      // Prefill fields from localStorage for back navigation
+      const roleInput = document.getElementById('role');
+      const audienceInput = document.getElementById('audience');
+      const typesInput = document.getElementById('presentation-types');
+
+      const savedRole = localStorage.getItem('userRole') || '';
+      const savedAudience = localStorage.getItem('userAudience') || '';
+      const savedTypes = localStorage.getItem('userPresentationTypes') || '';
+
+      if (savedRole) roleInput.value = savedRole;
+      if (savedAudience) audienceInput.value = savedAudience;
+      if (savedTypes) typesInput.value = savedTypes;
+
+      // Form submit with validation
+      document.getElementById('step3-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const role = roleInput.value.trim();
+        const audience = audienceInput.value.trim();
+        const types = typesInput.value.trim();
+
+        // Basic client-side validation
+        if (!role || role.length < 2) {
+          alert('אנא מלא/י את התפקיד שלך (לפחות 2 תווים).');
+          roleInput.focus();
+          return;
+        }
+
+        if (!audience || audience.length < 2) {
+          alert('אנא תאר/י למי את/ה בד״כ מציג/ה (לפחות 2 תווים).');
+          audienceInput.focus();
+          return;
+        }
+
+        if (!types || types.length < 2) {
+          alert('אנא רשום/י את סוגי המצגות הנפוצים שלך (לפחות 2 תווים).');
+          typesInput.focus();
+          return;
+        }
+
+        localStorage.setItem('userRole', role);
+        localStorage.setItem('userAudience', audience);
+        localStorage.setItem('userPresentationTypes', types);
+        window.location.href = 'step4.html';
+      });
     });
   </script>
 </body>

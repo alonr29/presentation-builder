@@ -30,6 +30,10 @@
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
         שלב 3 מתוך 5
       </span>
+      <!-- Visual progress bar -->
+      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
+        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 80%;"></div>
+      </div>
     </div>
 
     <form id="step4-form" class="space-y-8">
@@ -48,6 +52,9 @@
           name="topic"
           rows="4"
           placeholder="לדוגמה: תכנית עבודה שנתית לצוות המכירות"
+          required
+          aria-required="true"
+          aria-label="נושא המצגת"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition resize-y min-h-[120px]"
         ></textarea>
       </div>
@@ -62,6 +69,9 @@
           id="goal"
           name="goal"
           placeholder="לדוגמה: לקבל אישור לתקציב החדש"
+          required
+          aria-required="true"
+          aria-label="המטרה העיקרית של המצגת"
           class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition"
         >
       </div>
@@ -85,11 +95,39 @@
   </main>
 
   <script>
-    document.getElementById('step4-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      localStorage.setItem('presentationTopic', document.getElementById('topic').value.trim());
-      localStorage.setItem('presentationGoal', document.getElementById('goal').value.trim());
-      window.location.href = 'step5.html';
+    window.addEventListener('DOMContentLoaded', () => {
+      const topicInput = document.getElementById('topic');
+      const goalInput = document.getElementById('goal');
+
+      // Prefill from localStorage for back navigation
+      const savedTopic = localStorage.getItem('presentationTopic') || '';
+      const savedGoal = localStorage.getItem('presentationGoal') || '';
+      if (savedTopic) topicInput.value = savedTopic;
+      if (savedGoal) goalInput.value = savedGoal;
+
+      // Form submit with validation
+      document.getElementById('step4-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const topic = topicInput.value.trim();
+        const goal = goalInput.value.trim();
+
+        if (!topic || topic.length < 10) {
+          alert('אנא תאר/י את נושא המצגת (לפחות 10 תווים).');
+          topicInput.focus();
+          return;
+        }
+
+        if (!goal || goal.length < 5) {
+          alert('אנא תאר/י את המטרה המרכזית של המצגת (לפחות 5 תווים).');
+          goalInput.focus();
+          return;
+        }
+
+        localStorage.setItem('presentationTopic', topic);
+        localStorage.setItem('presentationGoal', goal);
+        window.location.href = 'step5.html';
+      });
     });
   </script>
 </body>
