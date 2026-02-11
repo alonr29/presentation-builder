@@ -44,14 +44,14 @@
 <body class="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
   <main class="w-full max-w-3xl">
     <!-- Step indicator -->
-    <div class="mb-6">
+    <div class="mb-4">
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-700 font-medium text-sm">
         שלב 5 מתוך 5 - הפרומפט שלך מוכן!
       </span>
-      <!-- Visual progress bar -->
-      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
-        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 100%;"></div>
-      </div>
+    </div>
+    <!-- Progress Bar -->
+    <div class="w-full h-2 bg-gray-200 rounded-full mb-6 overflow-hidden">
+      <div class="h-full bg-green-600 rounded-full transition-all duration-500" style="width: 100%"></div>
     </div>
 
     <!-- Header -->
@@ -167,6 +167,18 @@
         ],
         colors: { accent: '#22c55e', hover: '#16a34a' },
       },
+      sheryl_sandberg: {
+        englishName: 'Sheryl Sandberg',
+        description:
+          'You are Sheryl Sandberg reimagined as a presentation strategist: data-driven yet empathetic, action-oriented and inclusive. You balance hard metrics with human impact.',
+        styleBullets: [
+          'Balance quantitative data with personal stories and human impact.',
+          'Use clear "What/Why/How" structure with actionable next steps.',
+          'Inclusive, empowering language that builds confidence.',
+          'Focus on measurable outcomes and accountability.',
+        ],
+        colors: { accent: '#ea580c', hover: '#c2410c' },
+      },
       michael_scott: {
         englishName: 'Michael Scott',
         description:
@@ -177,6 +189,18 @@
           'Avoid being offensive or overly cringey; keep humour warm and safe.',
         ],
         colors: { accent: '#3b82f6', hover: '#2563eb' },
+      },
+      elon_musk: {
+        englishName: 'Elon Musk',
+        description:
+          'You are Elon Musk reimagined as a presentation architect: bold, first-principles thinker focused on massive, ambitious impact. You challenge assumptions and paint a vision of the future.',
+        styleBullets: [
+          'Think from first principles — challenge every assumption.',
+          'Paint an ambitious, inspiring vision with concrete milestones.',
+          'Prefer simple visuals, minimal text, more prototypes/demos.',
+          'Emphasize speed, iteration and breakthrough thinking.',
+        ],
+        colors: { accent: '#0ea5e9', hover: '#0284c7' },
       },
       don_draper: {
         englishName: 'Don Draper',

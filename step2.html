@@ -26,14 +26,14 @@
 <body class="min-h-screen bg-gray-50 flex flex-col items-center p-4 font-sans">
   <main class="w-full max-w-2xl">
     <!-- Step indicator -->
-    <div class="mb-6">
+    <div class="mb-4">
       <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
         שלב 2 מתוך 5
       </span>
-      <!-- Visual progress bar -->
-      <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
-        <div class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 40%;"></div>
-      </div>
+    </div>
+    <!-- Progress Bar -->
+    <div class="w-full h-2 bg-gray-200 rounded-full mb-6 overflow-hidden">
+      <div class="h-full bg-purple-600 rounded-full transition-all duration-500" style="width: 40%"></div>
     </div>
 
     <!-- Title -->
@@ -44,8 +44,8 @@
       הסוכן שתבנו יעזור לכם לבנות מצגות. כל דמות נותנת לו סגנון אחר – בחרו את מי שמתאים לכם
     </p>
 
-    <!-- Grid of personality cards (2 columns) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+    <!-- Grid of personality cards (2 columns on mobile, 3 on desktop) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       <!-- Walter White -->
       <button
         type="button"
@@ -56,7 +56,7 @@
         <span class="text-4xl mb-3" aria-hidden="true">🧪</span>
         <h3 class="font-bold text-lg mb-1">וולטר ווייט</h3>
         <p class="text-sm text-slate-300">
-          "Say my name" — מלמד את המדע של מצגת מושלמת
+          "Say my name" — המדע של מצגת מושלמת
         </p>
       </button>
 
@@ -101,6 +101,34 @@
           "PIVOT!" — מסביר למה כל שקף שם
         </p>
       </button>
+
+      <!-- NEW: Sheryl Sandberg -->
+      <button
+        type="button"
+        data-personality="sheryl_sandberg"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Sheryl Sandberg - אסטרטגית מצגות מבוססת נתונים ואמפתיה"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">👔</span>
+        <h3 class="font-bold text-lg mb-1">שריל סנדברג</h3>
+        <p class="text-sm text-slate-300">
+          "Lean In" — מצגות שמניעות לפעולה
+        </p>
+      </button>
+
+      <!-- NEW: Elon Musk -->
+      <button
+        type="button"
+        data-personality="elon_musk"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Elon Musk - אדריכל מצגות חזוני שחושב מהעקרונות הראשונים"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🚀</span>
+        <h3 class="font-bold text-lg mb-1">אילון מאסק</h3>
+        <p class="text-sm text-slate-300">
+          "Make it happen" — מצגות שמוכרות עתיד
+        </p>
+      </button>
     </div>
 
     <!-- Back link -->
@@ -116,7 +144,9 @@
       walter_white: 'וולטר ווייט',
       don_draper: 'דון דרייפר',
       michael_scott: 'מייקל סקוט',
-      ross_geller: 'רוס גלר'
+      ross_geller: 'רוס גלר',
+      sheryl_sandberg: 'שריל סנדברג',
+      elon_musk: 'אילון מאסק'
     };
     const cards = document.querySelectorAll('.personality-card');
 
