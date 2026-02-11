@@ -44,8 +44,8 @@
       הסוכן שתבנו יעזור לכם לבנות מצגות. כל דמות נותנת לו סגנון אחר – בחרו את מי שמתאים לכם
     </p>
 
-    <!-- Grid of personality cards (2 columns on mobile, 3 on desktop) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+    <!-- Grid of personality cards (2 columns on mobile, 4 on desktop) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       <!-- Walter White -->
       <button
         type="button"
@@ -129,6 +129,34 @@
           "Make it happen" — מצגות שמוכרות עתיד
         </p>
       </button>
+
+      <!-- Steve Jobs -->
+      <button
+        type="button"
+        data-personality="steve_jobs"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Steve Jobs - מינימליסט מצגות שמתמקד בפשטות ואלגנטיות"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🍎</span>
+        <h3 class="font-bold text-lg mb-1">סטיב ג'ובס</h3>
+        <p class="text-sm text-slate-300">
+          "One more thing" — פשטות ממוקדת
+        </p>
+      </button>
+
+      <!-- Oprah Winfrey -->
+      <button
+        type="button"
+        data-personality="oprah_winfrey"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Oprah Winfrey - מאמנת מצגות אמפתית שמתמקדת בחיבור אנושי"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">💬</span>
+        <h3 class="font-bold text-lg mb-1">אופרה ווינפרי</h3>
+        <p class="text-sm text-slate-300">
+          "What I know for sure" — חיבור אמיתי
+        </p>
+      </button>
     </div>
 
     <!-- Back link -->
@@ -146,7 +174,9 @@
       michael_scott: 'מייקל סקוט',
       ross_geller: 'רוס גלר',
       sheryl_sandberg: 'שריל סנדברג',
-      elon_musk: 'אילון מאסק'
+      elon_musk: 'אילון מאסק',
+      steve_jobs: 'סטיב ג׳ובס',
+      oprah_winfrey: 'אופרה ווינפרי'
     };
     const cards = document.querySelectorAll('.personality-card');
 
