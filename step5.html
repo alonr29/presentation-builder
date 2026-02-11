@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -17,6 +18,12 @@
           },
         },
       },
+    }
+  </script>
+  <script>
+    if (window.location.hostname !== 'localhost') {
+      const pageName = window.location.pathname.replace('.html', '').replace('/', 'home');
+      fetch(`https://api.countapi.xyz/hit/presentation-builder-alonr29/${pageName}`).catch(() => {});
     }
   </script>
   <style>
@@ -41,7 +48,21 @@
     .toast-animate { animation: toastFade 2.5s ease-in-out; }
   </style>
 </head>
-<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 font-sans transition-colors duration-300">
+  <!-- Dark Mode Toggle -->
+  <button
+    id="dark-mode-toggle"
+    class="fixed top-4 left-4 z-50 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+    aria-label="Toggle dark mode"
+  >
+    <svg class="w-6 h-6 text-gray-800 dark:text-yellow-300 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+    </svg>
+    <svg class="w-6 h-6 text-yellow-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+    </svg>
+  </button>
+
   <main class="w-full max-w-3xl">
     <!-- Step indicator -->
     <div class="mb-4">
@@ -50,23 +71,23 @@
       </span>
     </div>
     <!-- Progress Bar -->
-    <div class="w-full h-2 bg-gray-200 rounded-full mb-6 overflow-hidden">
+    <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full mb-6 overflow-hidden">
       <div class="h-full bg-green-600 rounded-full transition-all duration-500" style="width: 100%"></div>
     </div>
 
     <!-- Header -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 md:p-8">
       <div class="flex items-start justify-between gap-4 flex-row-reverse">
         <div class="flex-1">
-          <h1 class="text-2xl md:text-3xl font-bold text-gray-900 text-right leading-tight">
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white text-right leading-tight">
             הפרומפט המושלם לסוכן שלך
           </h1>
-          <p class="mt-2 text-gray-600 text-right">
+          <p class="mt-2 text-gray-600 dark:text-gray-300 text-right">
             העתק/י את הטקסט הבא והדבק/י ב-ChatGPT או Claude. הכל נבנה אוטומטית מהמידע שמילאת.
           </p>
         </div>
         <div class="flex-shrink-0">
-          <div class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center border border-gray-100">
+          <div class="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center border border-gray-100 dark:border-gray-700">
             <span class="text-2xl" aria-hidden="true">🎯</span>
           </div>
         </div>
@@ -75,15 +96,15 @@
       <!-- Prompt code block -->
       <div class="mt-6">
         <div class="flex items-center justify-between gap-3 mb-2 flex-row-reverse">
-          <p class="text-sm font-medium text-gray-700 text-right">
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-300 text-right">
             הפרומפט שלך
           </p>
-          <p id="persona-badge" class="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-gray-700">
+          <p id="persona-badge" class="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
             —
           </p>
         </div>
 
-        <pre class="w-full rounded-2xl bg-slate-900 text-slate-100 p-4 md:p-5 overflow-auto text-sm leading-6 border border-slate-800 fade-in-up"><code id="prompt-box">טוען פרומפט...</code></pre>
+        <pre class="w-full rounded-2xl bg-slate-900 dark:bg-slate-800 text-slate-100 p-4 md:p-5 overflow-auto text-sm leading-6 border border-slate-800 fade-in-up"><code id="prompt-box">טוען פרומפט...</code></pre>
 
         <div class="mt-4 flex flex-col md:flex-row gap-3">
           <button
@@ -96,21 +117,27 @@
           <button
             id="restart-btn"
             type="button"
-            class="w-full md:w-auto px-6 py-3 text-base font-semibold rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+            class="w-full md:w-auto px-6 py-3 text-base font-semibold rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
           >
             התחל מחדש
           </button>
           <a
             href="step4.html"
-            class="w-full md:w-auto px-6 py-3 text-base font-semibold rounded-full text-purple-700 hover:underline text-center"
+            class="w-full md:w-auto px-6 py-3 text-base font-semibold rounded-full text-purple-700 dark:text-purple-300 hover:underline text-center"
           >
             ← חזרה לשלב 4
           </a>
         </div>
 
-        <p class="mt-4 text-xs text-gray-500 text-right">
+        <p class="mt-4 text-xs text-gray-500 dark:text-gray-400 text-right">
           טיפ: המידע נשמר ב-localStorage בדפדפן, כך שאפשר לחזור אחורה בלי לאבד פרטים.
         </p>
+
+        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+            📊 <a href="https://api.countapi.xyz/stats/presentation-builder-alonr29" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline">צפה בסטטיסטיקות שימוש</a>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -400,6 +427,16 @@
         event.preventDefault();
         restart();
       }
+    });
+
+    // Dark mode functionality
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const html = document.documentElement;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') html.classList.add('dark');
+    darkModeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
   </script>
 </body>
