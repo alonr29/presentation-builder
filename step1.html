@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>פרטים אישיים — בונה סוכן מצגות</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Heebo', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html {
+      font-family: 'Heebo', system-ui, sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+  <main class="w-full max-w-2xl">
+    <!-- Step indicator -->
+    <div class="mb-8">
+      <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
+        שלב 1 מתוך 5
+      </span>
+    </div>
+
+    <form id="step1-form" class="space-y-8">
+      <!-- Name -->
+      <div class="space-y-2">
+        <label for="name" class="block text-lg font-medium text-gray-900 text-right">
+          מה השם שלך?
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="לדוגמה: שלהבת"
+          class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 text-right focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition"
+        >
+      </div>
+
+      <!-- Gender -->
+      <div class="space-y-3">
+        <p class="text-lg font-medium text-gray-900 text-right">
+          מגדר (לצורך התאמת לשון הפנייה)
+        </p>
+        <div class="flex gap-3 flex-row-reverse">
+          <button
+            type="button"
+            data-gender="female"
+            class="gender-btn flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-50 transition"
+          >
+            נקבה
+          </button>
+          <button
+            type="button"
+            data-gender="male"
+            class="gender-btn flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 font-medium hover:bg-gray-50 transition"
+          >
+            זכר
+          </button>
+        </div>
+        <input type="hidden" name="gender" id="gender" value="">
+      </div>
+
+      <!-- Continue button -->
+      <div class="pt-4">
+        <button
+          type="submit"
+          class="w-full px-8 py-4 text-xl font-bold text-white bg-purple-600 rounded-full shadow-lg hover:bg-purple-700 hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          המשך
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // Gender selection
+    const genderBtns = document.querySelectorAll('.gender-btn');
+    const genderInput = document.getElementById('gender');
+
+    genderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        genderBtns.forEach(b => {
+          b.classList.remove('bg-purple-100', 'border-purple-300');
+          b.classList.add('bg-white', 'border-gray-300');
+        });
+        btn.classList.remove('bg-white', 'border-gray-300');
+        btn.classList.add('bg-purple-100', 'border-purple-300');
+        genderInput.value = btn.dataset.gender;
+      });
+    });
+
+    // Form submit: save to localStorage and go to step2
+    document.getElementById('step1-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const gender = genderInput.value;
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userGender', gender);
+      window.location.href = 'step2.html';
+    });
+  </script>
+</body>
+</html>

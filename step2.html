@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בחירת אישיות — בונה סוכן מצגות</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Heebo', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { font-family: 'Heebo', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col items-center p-4 font-sans">
+  <main class="w-full max-w-2xl">
+    <!-- Step indicator -->
+    <div class="mb-6">
+      <span class="inline-block px-4 py-2 rounded-xl bg-purple-100 text-purple-600 font-medium text-sm">
+        שלב 2 מתוך 5
+      </span>
+    </div>
+
+    <!-- Title -->
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 text-right mb-2">
+      איזו אישיות תרצו לסוכן שלכם?
+    </h1>
+    <p class="text-base text-gray-600 text-right mb-8">
+      הסוכן שתבנו יעזור לכם לבנות מצגות. כל דמות נותנת לו סגנון אחר – בחרו את מי שמתאים לכם
+    </p>
+
+    <!-- Grid of personality cards (2 columns) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <!-- Walter White -->
+      <button
+        type="button"
+        data-personality="walter_white"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🧪</span>
+        <h3 class="font-bold text-lg mb-1">וולטר ווייט</h3>
+        <p class="text-sm text-slate-300">
+          "Say my name" — מלמד את המדע של מצגת מושלמת
+        </p>
+      </button>
+
+      <!-- Don Draper -->
+      <button
+        type="button"
+        data-personality="don_draper"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🥃</span>
+        <h3 class="font-bold text-lg mb-1">דון דרייפר</h3>
+        <p class="text-sm text-slate-300">
+          It's not a slide deck. It's a time machine.
+        </p>
+      </button>
+
+      <!-- Michael Scott -->
+      <button
+        type="button"
+        data-personality="michael_scott"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">📎</span>
+        <h3 class="font-bold text-lg mb-1">מייקל סקוט</h3>
+        <p class="text-sm text-slate-300">
+          Sometimes I'll start a presentation...
+        </p>
+      </button>
+
+      <!-- Ross Geller -->
+      <button
+        type="button"
+        data-personality="ross_geller"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🦖</span>
+        <h3 class="font-bold text-lg mb-1">רוס גלר</h3>
+        <p class="text-sm text-slate-300">
+          "PIVOT!" — מסביר למה כל שקף שם
+        </p>
+      </button>
+    </div>
+
+    <!-- Back link -->
+    <div class="text-center">
+      <a href="step1.html" class="text-purple-600 hover:underline font-medium">
+        ← חזרה לשלב 1
+      </a>
+    </div>
+  </main>
+
+  <script>
+    const personalityNames = {
+      walter_white: 'וולטר ווייט',
+      don_draper: 'דון דרייפר',
+      michael_scott: 'מייקל סקוט',
+      ross_geller: 'רוס גלר'
+    };
+    document.querySelectorAll('.personality-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.dataset.personality;
+        localStorage.setItem('selectedPersonality', id);
+        localStorage.setItem('selectedPersonalityName', personalityNames[id] || '');
+        window.location.href = 'step3.html';
+      });
+    });
+  </script>
+</body>
+</html>
