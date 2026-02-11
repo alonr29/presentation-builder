@@ -32,7 +32,21 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4 font-sans transition-colors duration-300">
+  <!-- Dark Mode Toggle -->
+  <button
+    id="dark-mode-toggle"
+    class="fixed top-4 left-4 z-50 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+    aria-label="Toggle dark mode"
+  >
+    <svg class="w-6 h-6 text-gray-800 dark:text-yellow-300 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+    </svg>
+    <svg class="w-6 h-6 text-yellow-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+    </svg>
+  </button>
+
   <main class="w-full max-w-2xl">
     <!-- Bullseye icon -->
     <div class="flex justify-center mb-6">
@@ -40,23 +54,23 @@
     </div>
 
     <!-- Main title -->
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center">
       בונה סוכן מצגות אישי
     </h1>
 
     <!-- Subtitle -->
-    <p class="text-lg md:text-xl text-gray-600 text-center mt-4 max-w-xl mx-auto">
+    <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-center mt-4 max-w-xl mx-auto">
       תוך 5 דקות תבנו סוכן שעוזר לכם לבנות מצגות — מבנה, כותרות, תוכן, ו-speaker notes
     </p>
 
     <!-- 4-step list container -->
-    <div class="mt-10 p-6 md:p-8 bg-gray-100 rounded-2xl space-y-4">
+    <div class="mt-10 p-6 md:p-8 bg-gray-100 dark:bg-gray-800 rounded-2xl space-y-4">
       <!-- Step 1 -->
       <div class="flex items-center gap-4 flex-row-reverse">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 text-purple-600 font-bold flex items-center justify-center text-lg">
           1
         </div>
-        <p class="text-base md:text-lg text-gray-800 text-right flex-1">
+        <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 text-right flex-1">
           ממלאים שם ובוחרים אישיות
         </p>
       </div>
@@ -65,7 +79,7 @@
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 text-purple-600 font-bold flex items-center justify-center text-lg">
           2
         </div>
-        <p class="text-base md:text-lg text-gray-800 text-right flex-1">
+        <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 text-right flex-1">
           עונים על כמה שאלות קצרות
         </p>
       </div>
@@ -74,7 +88,7 @@
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 text-purple-600 font-bold flex items-center justify-center text-lg">
           3
         </div>
-        <p class="text-base md:text-lg text-gray-800 text-right flex-1">
+        <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 text-right flex-1">
           מקבלים פרומפט + מסמכי ידע מוכנים
         </p>
       </div>
@@ -83,7 +97,7 @@
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 text-purple-600 font-bold flex items-center justify-center text-lg">
           4
         </div>
-        <p class="text-base md:text-lg text-gray-800 text-right flex-1">
+        <p class="text-base md:text-lg text-gray-800 dark:text-gray-200 text-right flex-1">
           מתקינים בסוכן ה-AI שבחרתם ומתחילים
         </p>
       </div>
@@ -99,5 +113,51 @@
       </a>
     </div>
   </main>
+  <script>
+    // Dark mode functionality
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const html = document.documentElement;
+
+    // Apply saved theme
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      html.classList.add('dark');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const theme = html.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+    });
+
+    // Reset wizard data on new session start (index page)
+    const wizardKeys = [
+      'userName',
+      'userGender',
+      'selectedPersonality',
+      'selectedPersonalityName',
+      'userRole',
+      'userAudience',
+      'userPresentationTypes',
+      'presentationTopic',
+      'presentationGoal'
+    ];
+    wizardKeys.forEach((key) => localStorage.removeItem(key));
+  </script>
+
+  <!-- Simple Privacy-Friendly Analytics -->
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      const pageView = {
+        page: window.location.pathname,
+        timestamp: new Date().toISOString(),
+        referrer: document.referrer || 'direct'
+      };
+
+      const pageName = window.location.pathname.replace('.html', '').replace('/', 'home');
+      fetch(`https://api.countapi.xyz/hit/presentation-builder-alonr29/${pageName}`)
+        .catch(() => {});
+    }
+  </script>
 </body>
 </html>
