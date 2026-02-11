@@ -31,19 +31,52 @@
   </style>
 </head>
 <body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-4 font-sans transition-colors duration-300">
-  <!-- Dark Mode Toggle -->
-  <button
-    id="dark-mode-toggle"
-    class="fixed top-4 left-4 z-50 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-    aria-label="Toggle dark mode"
-  >
-    <svg class="w-6 h-6 text-gray-800 dark:text-yellow-300 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-    </svg>
-    <svg class="w-6 h-6 text-yellow-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-    </svg>
-  </button>
+  <div class="fixed top-4 left-4 z-50 flex gap-2">
+    <!-- Dark Mode Toggle -->
+    <button
+      id="dark-mode-toggle"
+      class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      aria-label="Toggle dark mode"
+    >
+      <svg class="w-6 h-6 text-gray-800 dark:text-yellow-300 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+      </svg>
+      <svg class="w-6 h-6 text-yellow-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+      </svg>
+    </button>
+
+    <!-- Theme Selector -->
+    <div class="relative">
+      <button
+        id="theme-toggle"
+        class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        aria-label="Change theme"
+      >
+        <svg class="w-6 h-6 text-gray-800 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+        </svg>
+      </button>
+      <div id="theme-menu" class="hidden absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl p-2 space-y-1 min-w-[140px]">
+        <button data-theme="purple" class="flex items-center gap-2 w-full px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <span class="w-4 h-4 rounded-full bg-purple-600"></span>
+          <span class="text-sm text-gray-700 dark:text-gray-300">סגול</span>
+        </button>
+        <button data-theme="blue" class="flex items-center gap-2 w-full px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <span class="w-4 h-4 rounded-full bg-blue-600"></span>
+          <span class="text-sm text-gray-700 dark:text-gray-300">כחול</span>
+        </button>
+        <button data-theme="green" class="flex items-center gap-2 w-full px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <span class="w-4 h-4 rounded-full bg-green-600"></span>
+          <span class="text-sm text-gray-700 dark:text-gray-300">ירוק</span>
+        </button>
+        <button data-theme="red" class="flex items-center gap-2 w-full px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <span class="w-4 h-4 rounded-full bg-red-600"></span>
+          <span class="text-sm text-gray-700 dark:text-gray-300">אדום</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <main class="w-full max-w-2xl">
     <!-- Step indicator -->
@@ -178,6 +211,62 @@
           "What I know for sure" — חיבור אמיתי
         </p>
       </button>
+
+      <!-- Sherlock Holmes -->
+      <button
+        type="button"
+        data-personality="sherlock_holmes"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Sherlock Holmes - חקירה אנליטית"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🔍</span>
+        <h3 class="font-bold text-lg mb-1">שרלוק הולמס</h3>
+        <p class="text-sm text-slate-300">
+          "Elementary" — חקירה אנליטית
+        </p>
+      </button>
+
+      <!-- Marie Curie -->
+      <button
+        type="button"
+        data-personality="marie_curie"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Marie Curie - מדע חדשני"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🧪</span>
+        <h3 class="font-bold text-lg mb-1">מארי קירי</h3>
+        <p class="text-sm text-slate-300">
+          "Nothing in life is to be feared" — מדע חדשני
+        </p>
+      </button>
+
+      <!-- Alfred Hitchcock -->
+      <button
+        type="button"
+        data-personality="alfred_hitchcock"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Alfred Hitchcock - מתח דרמטי"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🎬</span>
+        <h3 class="font-bold text-lg mb-1">אלפרד היצ'קוק</h3>
+        <p class="text-sm text-slate-300">
+          "Master of suspense" — מתח דרמטי
+        </p>
+      </button>
+
+      <!-- Frida Kahlo -->
+      <button
+        type="button"
+        data-personality="frida_kahlo"
+        class="personality-card group flex flex-col items-center text-center p-6 rounded-2xl bg-slate-800 text-white shadow-lg hover:bg-slate-700 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        aria-label="Frida Kahlo - אמנות רגשית"
+      >
+        <span class="text-4xl mb-3" aria-hidden="true">🎨</span>
+        <h3 class="font-bold text-lg mb-1">פרידה קאלו</h3>
+        <p class="text-sm text-slate-300">
+          "I paint my reality" — אמנות רגשית
+        </p>
+      </button>
     </div>
 
     <!-- Back link -->
@@ -197,7 +286,11 @@
       sheryl_sandberg: 'שריל סנדברג',
       elon_musk: 'אילון מאסק',
       steve_jobs: 'סטיב ג׳ובס',
-      oprah_winfrey: 'אופרה ווינפרי'
+      oprah_winfrey: 'אופרה ווינפרי',
+      sherlock_holmes: 'שרלוק הולמס',
+      marie_curie: 'מארי קירי',
+      alfred_hitchcock: 'אלפרד היצ׳קוק',
+      frida_kahlo: 'פרידה קאלו'
     };
     const cards = document.querySelectorAll('.personality-card');
 
@@ -230,12 +323,64 @@
     // Dark mode functionality
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     const html = document.documentElement;
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') html.classList.add('dark');
+    const currentThemeMode = localStorage.getItem('theme') || 'light';
+    if (currentThemeMode === 'dark') html.classList.add('dark');
     darkModeToggle.addEventListener('click', () => {
       html.classList.toggle('dark');
       localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     });
+
+    // Theme selector functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeMenu = document.getElementById('theme-menu');
+    const themeButtons = document.querySelectorAll('[data-theme]');
+
+    const themes = {
+      purple: { primary: '#9333ea', hover: '#7e22ce', ring: '#a855f7' },
+      blue: { primary: '#2563eb', hover: '#1d4ed8', ring: '#3b82f6' },
+      green: { primary: '#16a34a', hover: '#15803d', ring: '#22c55e' },
+      red: { primary: '#dc2626', hover: '#b91c1c', ring: '#ef4444' },
+    };
+
+    const currentTheme = localStorage.getItem('colorTheme') || 'purple';
+    applyTheme(currentTheme);
+
+    themeToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      themeMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+      themeMenu.classList.add('hidden');
+    });
+
+    themeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const theme = btn.dataset.theme;
+        localStorage.setItem('colorTheme', theme);
+        applyTheme(theme);
+        themeMenu.classList.add('hidden');
+      });
+    });
+
+    function applyTheme(theme) {
+      const colors = themes[theme] || themes.purple;
+      document.documentElement.style.setProperty('--theme-primary', colors.primary);
+      document.documentElement.style.setProperty('--theme-hover', colors.hover);
+      document.documentElement.style.setProperty('--theme-ring', colors.ring);
+
+      // Apply to primary CTA-like elements (e.g., progress color, rings)
+      document.querySelectorAll('.bg-purple-600').forEach((el) => {
+        el.style.backgroundColor = colors.primary;
+      });
+      document.querySelectorAll('.hover\\:bg-purple-700').forEach((el) => {
+        el.addEventListener('mouseenter', () => (el.style.backgroundColor = colors.hover));
+        el.addEventListener('mouseleave', () => (el.style.backgroundColor = colors.primary));
+      });
+      document.querySelectorAll('.text-purple-600, .text-purple-700').forEach((el) => {
+        el.style.color = colors.primary;
+      });
+    }
   </script>
 </body>
 </html>
